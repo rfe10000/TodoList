@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Configuration;
 using TodoList;
+using System.Reflection.Metadata;
 
 public partial class Program
 {
@@ -12,10 +13,9 @@ public partial class Program
 
     private static string menueAlt2 = "Pick an option:\n(1) Add New Task\n(2) Save and Quit";  
 
-    private static string dataSourceDir = @"C:\rf\lexicon\test-data\";
+    private static readonly string dataSourceDir = @"C:\rf\lexicon\test-data\";
     private static string dataSource = string.Empty; 
     private static List<ToDoProject> list = null;
-
 
     private static bool HandleNewTask(bool exist = true)
     {

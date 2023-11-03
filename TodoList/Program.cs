@@ -27,40 +27,51 @@ try
     Dictionary<string, string> fileNames = ToDoUtils.GetDataSource(dataSourceDir);
     if (fileNames.Count() > 0)
     {
-        PrintColoredMessage("Select data source [Number]: 1.Existing  2.New: ", ConsoleColor.DarkYellow, true);
-        dataSourceOption = (Console.ReadLine() ?? string.Empty).Trim();
+        PrintColoredMessage("Select data source [Number]: 1.Existing  2.New: ", ConsoleColor.DarkYellow, true);        
 
-        if (dataSourceOption.Equals("1"))
+        do
         {
-            optionMenue = menueAlt1;
-            foreach (var result in fileNames)
+            dataSourceOption = (Console.ReadLine() ?? string.Empty).Trim();
+            if (dataSourceOption.Equals("1"))
             {
-                PrintColoredMessage($"{result.Key}. {result.Value}");
+                optionMenue = menueAlt1;
+                foreach (var result in fileNames)
+                {
+                    PrintColoredMessage($"{result.Key}. {result.Value}");
+                }
+                string sourceSelected = (Console.ReadLine() ?? string.Empty).Trim();
+                dataSource = fileNames[sourceSelected];
+
+                list = ToDoUtils.ParseToDoInfo(dataSourceDir + dataSource);
+
+                tplCounts = GetCounts(list);
+                if (tplCounts.open + tplCounts.closed == 0)
+                {
+                    optionMenue = menueAlt2;
+                    menuIsFirst = false;
+                    PrintColoredMessage(String.Format(sumary, tplCounts.open, tplCounts.closed), ConsoleColor.Cyan);
+                }
+                else
+                    PrintColoredMessage(String.Format(sumary, tplCounts.open, tplCounts.closed), ConsoleColor.Cyan);
+                break;
             }
-            string sourceSelected = (Console.ReadLine() ?? string.Empty).Trim();
-            dataSource = fileNames[sourceSelected];
-
-            list = ToDoUtils.ParseToDoInfo(dataSourceDir + dataSource);
-
-            tplCounts = GetCounts(list);
-            if (tplCounts.open + tplCounts.closed == 0)
+            else if (dataSourceOption.Equals("2"))
             {
-                optionMenue = menueAlt2;
                 menuIsFirst = false;
-                PrintColoredMessage(String.Format(sumary, tplCounts.open, tplCounts.closed), ConsoleColor.Cyan);
+                optionMenue = menueAlt2;
+                list = new List<ToDoProject>();
+                break;
+                //skapa ny fil 
             }
             else
-                PrintColoredMessage(String.Format(sumary, tplCounts.open, tplCounts.closed), ConsoleColor.Cyan);
+            {
+                if (dataSourceOption.ToLower().Equals("q"))
+                    throw new Exception("Quiting");                
+                
+                PrintColoredMessage("Not a valid choice (q) to quit", ConsoleColor.Red);
+            }
         }
-        else if (dataSourceOption.Equals("2"))
-        {
-            menuIsFirst = false;
-            optionMenue = menueAlt2;
-            list = new List<ToDoProject>();
-            //skapa ny fil 
-        }
-        else
-            throw new NotImplementedException("Not a valid selection. What to do not implemented");
+        while (true);
     }
     else
     {

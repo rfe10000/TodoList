@@ -221,12 +221,12 @@ public partial class Program
         try
         {
             var todoCounting =
-                from todoItems in list
+                (from todoItems in list
                 where todoItems.ToDo != null
                 select todoItems.ToDo into internalToDo
                 from item in internalToDo
                 group item by item.Status into countStatus
-                select new { stat = countStatus.Key, num = countStatus.Count() };
+                select new { stat = countStatus.Key, num = countStatus.Count() }).ToList();
 
 
             foreach (var cnt in todoCounting)
@@ -268,7 +268,7 @@ public partial class Program
     {
         //Todo efter datum med projectnamn
         var todoByDate =
-            from todoItems in list
+            (from todoItems in list
             where todoItems.ToDo != null
             from todos in todoItems.ToDo
             orderby todos.DueDate descending
@@ -276,7 +276,7 @@ public partial class Program
             {
                 Project = todoItems.Project,
                 todos
-            };
+            }).ToList();
         if (todoByDate.Count() > 0)
         {
             PrintColoredMessage($"{"Date".PadRight(10)}{" ".PadRight(3)}{"Project".PadRight(12)}{"Title".PadRight(30)}{"Status"}{" ".PadRight(6)}Descrition", ConsoleColor.Green);
@@ -292,7 +292,7 @@ public partial class Program
     private static void ToDoByProject(List<ToDoProject> list)
     {
         var todoByProject =
-            from todoItems in list
+            (from todoItems in list
             where todoItems.ToDo != null
             from todos in todoItems.ToDo
             orderby todoItems.Project, todos.DueDate descending
@@ -300,7 +300,7 @@ public partial class Program
             {
                 Project = todoItems.Project,
                 todos
-            };
+            }).ToList();
 
         if (todoByProject.Count() > 0)
         {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace TodoList
 {
     /*
-     * Hjälp metoder som ligger lite utanför programklassen. Därför ligger de 
+     * Hjälpmetoder som ligger lite utanför programklassen. Därför ligger de 
      * inte i "Partial"-filen. Dock hårfint.
     */
     internal class ToDoUtils
